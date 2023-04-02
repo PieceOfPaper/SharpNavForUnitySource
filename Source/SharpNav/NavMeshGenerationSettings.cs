@@ -3,7 +3,7 @@
 
 using System;
 
-using YamlDotNet.Serialization;
+// using YamlDotNet.Serialization;
 
 namespace SharpNav
 {
@@ -124,7 +124,7 @@ namespace SharpNav
 		/// <summary>
 		/// Gets the height of the agents traversing the <see cref="NavMesh"/> in voxel (cell) units.
 		/// </summary>
-		[YamlIgnore]
+		// [YamlIgnore]
 		public int VoxelAgentHeight
 		{
 			get
@@ -136,7 +136,7 @@ namespace SharpNav
 		/// <summary>
 		/// Gets the maximum clim height in voxel (cell) units.
 		/// </summary>
-		[YamlIgnore]
+		// [YamlIgnore]
 		public int VoxelMaxClimb
 		{
 			get
@@ -148,7 +148,7 @@ namespace SharpNav
 		/// <summary>
 		/// Gets the radius of the agents traversing the <see cref="NavMesh"/> in voxel (cell) units.
 		/// </summary>
-		[YamlIgnore]
+		// [YamlIgnore]
 		public int VoxelAgentRadius
 		{
 			get
