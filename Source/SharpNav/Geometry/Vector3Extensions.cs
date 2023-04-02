@@ -69,7 +69,7 @@ namespace SharpNav.Geometry
 #elif UNITY3D
 			result = Vector3.Min(left, right);
 #else
-			Vector3.Min(ref left, ref right, out result);
+			Vector3.ComponentMin(ref left, ref right, out result);
 #endif
 		}
 
@@ -86,7 +86,7 @@ namespace SharpNav.Geometry
 #elif UNITY3D
 			result = Vector3.Min(left, right);
 #else
-			Vector3.Max(ref left, ref right, out result);
+			Vector3.ComponentMax(ref left, ref right, out result);
 #endif
 		}
 

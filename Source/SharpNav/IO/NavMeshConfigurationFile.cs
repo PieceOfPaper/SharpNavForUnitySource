@@ -29,24 +29,28 @@ namespace SharpNav.IO
 			InputMeshes = new List<MeshSettings>();
 		}
 
-		public NavMeshConfigurationFile(StreamReader input)
-		{
-			var deserializer = new Deserializer(namingConvention: new HyphenatedNamingConvention());
-			var data = deserializer.Deserialize<YamlData>(input);
+        public NavMeshConfigurationFile(StreamReader input)
+        {
+            var deserializer = new DeserializerBuilder()
+				.WithNamingConvention(HyphenatedNamingConvention.Instance)
+				.Build();
+            var data = deserializer.Deserialize<YamlData>(input);
 
-			GenerationSettings = data.Config;
-			ExportPath = data.Export;
-			InputMeshes = data.Meshes;
-		}
+            GenerationSettings = data.Config;
+            ExportPath = data.Export;
+            InputMeshes = data.Meshes;
+        }
 
-		public void Save(string path)
+        public void Save(string path)
 		{
 			var data = new YamlData();
 			data.Config = GenerationSettings;
 			data.Export = ExportPath;
 			data.Meshes = InputMeshes;
 
-			var serializer = new Serializer(SerializationOptions.None, new HyphenatedNamingConvention());
+			var serializer = new SerializerBuilder()
+				.WithNamingConvention(HyphenatedNamingConvention.Instance)
+				.Build();
 			using (StreamWriter writer = new StreamWriter(path))
 				serializer.Serialize(writer, data);
 		}
