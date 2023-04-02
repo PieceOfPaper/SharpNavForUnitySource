@@ -160,5 +160,82 @@ namespace SharpNav.IO.Json
 
 			return result;
 		}
+
+
+		private JObject SerializeToJObject(TiledNavMesh mesh)
+		{
+			JObject root = new JObject();
+
+			root.Add("meta", JToken.FromObject(new
+			{
+				version = new
+				{
+					
+					snj = FormatVersion,
+					sharpnav = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion
+				}
+			}));
+
+			root.Add("origin", JToken.FromObject(mesh.Origin, serializer));
+			root.Add("tileWidth", JToken.FromObject(mesh.TileWidth, serializer));
+			root.Add("tileHeight", JToken.FromObject(mesh.TileHeight, serializer));
+			root.Add("maxTiles", JToken.FromObject(mesh.MaxTiles, serializer));
+			root.Add("maxPolys", JToken.FromObject(mesh.MaxPolys, serializer));
+
+			var tilesArray = new JArray();
+			foreach (NavTile tile in mesh.Tiles)
+			{
+				NavPolyId id = mesh.GetTileRef(tile);
+				tilesArray.Add(SerializeMeshTile(tile, id));
+			}
+
+			root.Add("tiles", tilesArray);
+
+            return root;
+        }
+
+		public override string SerializeToText(TiledNavMesh mesh)
+		{
+            var root = SerializeToJObject(mesh);
+            return root.ToString(Formatting.Indented);
+        }
+
+		public override byte[] SerializeToBinary(TiledNavMesh mesh)
+		{
+            var root = SerializeToJObject(mesh);
+			return System.Text.Encoding.UTF8.GetBytes(root.ToString(Formatting.None));
+        }
+
+		public override TiledNavMesh DeserializeFromText(string text)
+		{
+			JObject root = JObject.Parse(text);
+
+			if (root["meta"]["version"]["snj"].ToObject<int>() != FormatVersion)
+				throw new ArgumentException("The version of the file does not match the version of the parser. Consider using an older version of SharpNav or re-generating your .snj meshes.");
+
+			Vector3 origin = root["origin"].ToObject<Vector3>(serializer);
+			float tileWidth = root["tileWidth"].ToObject<float>(serializer);
+			float tileHeight = root["tileHeight"].ToObject<float>(serializer);
+			int maxTiles = root["maxTiles"].ToObject<int>(serializer);
+			int maxPolys = root["maxPolys"].ToObject<int>(serializer);
+
+			var mesh = new TiledNavMesh(origin, tileWidth, tileHeight, maxTiles, maxPolys);
+
+			JArray tilesToken = (JArray) root["tiles"];
+			List<NavTile> tiles = new List<NavTile>();
+			foreach (JToken tileToken in tilesToken)
+			{
+				NavPolyId tileRef;
+				NavTile tile = DeserializeMeshTile(tileToken, mesh.IdManager, out tileRef);
+				mesh.AddTileAt(tile, tileRef);
+			}
+
+			return mesh;
+        }
+
+		public override TiledNavMesh DeserializeFromBinary(byte[] bytes)
+		{
+            return DeserializeFromText(System.Text.Encoding.UTF8.GetString(bytes));
+        }
 	}
 }

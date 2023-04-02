@@ -27,5 +27,11 @@ namespace SharpNav.IO
 		/// <param name="path">file to deserialize from</param>
 		/// <returns>deserialized mesh</returns>
 		public abstract TiledNavMesh Deserialize(string path);
+
+
+		public abstract string SerializeToText(TiledNavMesh mesh);
+		public abstract byte[] SerializeToBinary(TiledNavMesh mesh);
+		public abstract TiledNavMesh DeserializeFromText(string text);
+		public abstract TiledNavMesh DeserializeFromBinary(byte[] bytes);
 	}
 }
