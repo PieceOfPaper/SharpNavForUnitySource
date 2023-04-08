@@ -165,7 +165,6 @@ namespace SharpNav.Crowds
 				return false;
 
 			const int MaxIter = 32;
-			const int MaxRes = 32;
 
 			Path res = new Path();
 			int numRes = 0;

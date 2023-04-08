@@ -346,7 +346,12 @@ namespace SharpNav.Crowds
 			//TODO write an actual ToString.
 			return base.ToString();
 		}
+		
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 }

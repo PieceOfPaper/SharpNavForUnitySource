@@ -1239,8 +1239,6 @@ namespace SharpNav
 				return false;
 			}
 
-			int n = 0;
-
 			if (query.Start.Polygon == query.End.Polygon)
 			{
 				//special case: the search starts and ends at the same poly
@@ -1319,8 +1317,6 @@ namespace SharpNav
 				query = new QueryData();
 				return false;
 			}
-
-			int n = 0;
 
 			if (query.Start.Polygon == query.End.Polygon)
 			{
