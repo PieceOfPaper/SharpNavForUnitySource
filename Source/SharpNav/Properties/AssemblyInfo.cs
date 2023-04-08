@@ -18,7 +18,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
-[assembly: CLSCompliant(true)]
 
 #if MONOGAME
 [assembly: InternalsVisibleTo("SharpNav.Tests")]
