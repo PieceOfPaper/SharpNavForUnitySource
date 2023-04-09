@@ -316,42 +316,12 @@ namespace SharpNav.Crowds
 			this.Parameters = parameters;
 		}
 
-		public static bool operator ==(Agent left, Agent right)
-		{
-			return left.Equals(right);
-		}
-
-		public static bool operator !=(Agent left, Agent right)
-		{
-			return !(left == right);
-		}
-
-		public bool Equals(Agent other)
+		bool IEquatable<Agent>.Equals(Agent other)
 		{
 			//TODO find a way to actually compare for equality.
 			return object.ReferenceEquals(this, other);
 		}
 
-		public override bool Equals(object obj)
-		{
-			var other = obj as Agent;
-			if (other != null)
-				return this.Equals(other);
-
-			return false;
-		}
-
-		public override string ToString()
-		{
-			//TODO write an actual ToString.
-			return base.ToString();
-		}
-		
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
-
-        #endregion
-    }
+		#endregion
+	}
 }
